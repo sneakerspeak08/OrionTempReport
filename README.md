@@ -7,7 +7,7 @@ For our Temperature Reporting Project, we are going to create an interactive map
 First install npm dependences:\
   npm install\
 then start npm server:\
-  npm run\
+  npm run dev\
 finally:\
   open http://localhost:3000\
 
