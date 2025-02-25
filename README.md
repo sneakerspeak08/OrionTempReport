@@ -5,11 +5,11 @@ For our Temperature Reporting Project, we are going to create an interactive map
 
 ## Project Setup:
 First install npm dependences:\
-  npm install\
+&nbsp;&nbsp;&nbsp;&nbsp;npm install\
 then start npm server:\
-  npm run dev\
+&nbsp;&nbsp;&nbsp;&nbsp;npm run dev\
 finally:\
-  open http://localhost:3000\
+&nbsp;&nbsp;&nbsp;&nbsp;open http://localhost:3000\
 
 ## Usage Details:
 This application was created to allow UNC students and faculty to report and view the temperatures of individual classrooms or buildings across UNC Charlotte campus.
