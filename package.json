@@ -1,21 +1,27 @@
 {
-  "name": "oriontempreport",
-  "version": "1.0.0",
-  "description": "Project Overview:  For our Temperature Reporting Project, we are going to create an interactive map that enables UNC Charlotte students and faculty to submit the temperature of classrooms or buildings. We are going to use an interactive map of the UNC Charlotte campus and give color gradients to each building and will easily direct users to a building with a temperature they prefer. Alongside the map we will create a web page to also show temperature for every classroom and building. Historical temperature trends of buildings and classrooms are going to be stored in a persistence database. We will use the historical data to fill in when we don’t have up to date temperature submissions.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "lucide-react": "^0.475.0",
-    "next": "^15.1.7",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "vercel": "^41.1.4"
-  }
+    "name": "oriontempreport",
+    "version": "1.0.0",
+    "description": "Temperature Reporting Project for UNC Charlotte campus",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "lucide-react": "^0.263.1",
+        "next": "13.4.19",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "tailwindcss-animate": "^1.0.7"
+    },
+    "devDependencies": {
+        "@types/node": "20.4.5",
+        "@types/react": "18.2.18",
+        "@types/react-dom": "18.2.7",
+        "autoprefixer": "10.4.14",
+        "postcss": "8.4.27",
+        "tailwindcss": "3.3.3",
+        "typescript": "5.1.6"
+    }
 }
