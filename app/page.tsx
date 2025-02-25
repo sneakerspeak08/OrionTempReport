@@ -1,6 +1,5 @@
-import React from "react";
-import Link from "next/link"
-import "./global.css"
+import Link from 'next/link';
+
 export default function Home() {
     const currentTemp = 72
     return (
