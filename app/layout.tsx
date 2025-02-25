@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "UNC Campus Temperature Reporter",
-  description: "Report and view temperatures across UNC campus",
+  description: "Report and view temperatures across the UNC Charlotte campus",
 }
 
 export default function RootLayout({
