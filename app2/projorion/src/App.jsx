@@ -1,33 +1,37 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import "./App.css"
-import ReportForm from "./components/ReportForm"
 import Home from "./components/Home"
+import ReportForm from "./components/ReportForm"
+import Login from "./components/Login"
+import Signup from "./components/Signup"
+import ProjectedRoute from "./components/Projectedroute"
+import { AuthProvider } from "./context/AuthContext"
+import NavBar from "./components/NavBar"
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
-        <header className="bg-blue-700 text-white p-4">
-          <div className="container mx-auto">
-            <h1 className="text-2xl font-bold">UNCC Campus Temperature Reporter</h1>
-            <nav className="mt-2">
-              <Link to="/" className="text-white hover:text-blue-200 mr-4">
-                Home
-              </Link>
-              <Link to="/report" className="text-white hover:text-blue-200">
-                Report Temperature
-              </Link>
-            </nav>
-          </div>
-        </header>
-        <main className="container mx-auto p-4">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/report" element={<ReportForm />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen" style={{ backgroundColor: "#005035" }}>
+          <NavBar />
+          <main className="container mx-auto px-4 py-12">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route
+                path="/report"
+                element={
+                  <ProjectedRoute>
+                    <ReportForm />
+                  </ProjectedRoute>
+                }
+              />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </AuthProvider>
   )
 }
 
