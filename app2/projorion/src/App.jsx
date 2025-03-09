@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import "./App.css"
 import ReportForm from "./components/ReportForm"
 import Home from "./components/Home"
+import Map from "./components/Map"
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <main className="container mx-auto p-4">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/map" element={<Map />} />
             <Route path="/report" element={<ReportForm />} />
           </Routes>
         </main>
