@@ -17,7 +17,10 @@
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+<<<<<<< HEAD
     "react-leaflet": "^5.0.0",
+=======
+>>>>>>> origin/main
     "react-router-dom": "^7.3.0"
   },
   "devDependencies": {
