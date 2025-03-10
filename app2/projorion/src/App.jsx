@@ -4,9 +4,10 @@ import Home from "./components/Home"
 import ReportForm from "./components/ReportForm"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
-import ProjectedRoute from "./components/Projectedroute"
+import ProjectedRoute from "./components/ProjectedRoute"
 import { AuthProvider } from "./context/AuthContext"
 import NavBar from "./components/NavBar"
+import Reports from "./components/Reports"
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                   </ProjectedRoute>
                 }
               />
+              <Route path="/reports" element={<Reports />} />
             </Routes>
           </main>
         </div>
