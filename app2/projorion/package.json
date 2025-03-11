@@ -13,9 +13,14 @@
     "@supabase/supabase-js": "^2.49.1",
     "@tailwindcss/postcss": "^4.0.9",
     "autoprefixer": "^10.4.20",
+    "leaflet": "^1.9.4",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+<<<<<<< HEAD
+    "react-leaflet": "^5.0.0",
+=======
+>>>>>>> origin/main
     "react-router-dom": "^7.3.0"
   },
   "devDependencies": {
