@@ -8,10 +8,7 @@ import ProjectedRoute from "./components/ProjectedRoute"
 import { AuthProvider } from "./context/AuthContext"
 import NavBar from "./components/NavBar"
 import Reports from "./components/Reports"
-<<<<<<< HEAD
 import Map from "./components/Map"
-=======
->>>>>>> origin/main
 
 function App() {
   return (
@@ -24,10 +21,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-<<<<<<< HEAD
               <Route path="/map" element={<Map />} />
-=======
->>>>>>> origin/main
               <Route
                 path="/report"
                 element={
