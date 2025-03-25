@@ -5,14 +5,48 @@ import { supabase } from "../lib/supabase"
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 
+const BUILDING_COORDINATES = {
+  atkins: [35.305809638726224, -80.73216064203982],
+  barnard: [35.30674, -80.73315],
+  "belk-gym": [35.30548, -80.73452],
+  bioinformatics: [35.31235, -80.74212],
+  burson: [35.30768, -80.73252],
+  cameron: [35.30703, -80.73358],
+  cato: [35.30742, -80.73098],
+  "center-city": [35.22735, -80.83721],
+  cone: [35.30548, -80.73315],
+  duke: [35.31235, -80.73452],
+  epic: [35.30987, -80.74212],
+  fretwell: [35.30548, -80.73252],
+  friday: [35.30674, -80.73358],
+  grigg: [35.31235, -80.73098],
+  kennedy: [35.30768, -80.73721],
+  macy: [35.30703, -80.73452],
+  mceniry: [35.30742, -80.73252],
+  "memorial-hall": [35.30548, -80.73358],
+  motorsports: [35.31235, -80.73098],
+  portal: [35.30987, -80.73721],
+  prospector: [35.30768, -80.73452],
+  robinson: [35.30703, -80.73252],
+  rowe: [35.30742, -80.73358],
+  smith: [35.30548, -80.73098],
+  storrs: [35.30674, -80.73721],
+  "student-union": [35.30987, -80.73452],
+  "university-recreation-center": [35.30768, -80.73252],
+  urec: [35.30703, -80.73358],
+  woodward: [35.307045385840325, -80.73576861445225],
+}
+
 function ReportForm() {
   const [temperatureFeeling, setTemperatureFeeling] = useState("")
   const [location, setLocation] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLocating, setIsLocating] = useState(false)
+  const [locationError, setLocationError] = useState("")
+  const [userLocation, setUserLocation] = useState(null)
   const { user } = useAuth()
   const navigate = useNavigate()
 
-  // Temperature options with associated numeric values
   const temperatureOptions = [
     { value: "freezing", label: "FREEZING", temperature: 45 },
     { value: "cold", label: "COLD", temperature: 55 },
@@ -21,7 +55,6 @@ function ReportForm() {
     { value: "sweltering", label: "SWELTERING", temperature: 95 },
   ]
 
-  // List of UNC Charlotte campus buildings
   const campusBuildings = [
     { value: "", label: "Select a location..." },
     { value: "atkins", label: "Atkins Library" },
@@ -55,20 +88,94 @@ function ReportForm() {
     { value: "woodward", label: "Woodward Hall" },
   ]
 
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3
+    const φ1 = (lat1 * Math.PI) / 180
+    const φ2 = (lat2 * Math.PI) / 180
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+    return R * c
+  }
+
+  const findNearestBuilding = (userLat, userLon) => {
+    let nearestBuilding = null
+    let shortestDistance = Number.POSITIVE_INFINITY
+
+    Object.entries(BUILDING_COORDINATES).forEach(([buildingCode, coords]) => {
+      const distance = calculateDistance(userLat, userLon, coords[0], coords[1])
+
+      if (distance < shortestDistance) {
+        shortestDistance = distance
+        nearestBuilding = buildingCode
+      }
+    })
+
+    return nearestBuilding
+  }
+
+  const getUserLocation = () => {
+    setIsLocating(true)
+    setLocationError("")
+
+    if (!navigator.geolocation) {
+      setLocationError("Geolocation is not supported by your browser")
+      setIsLocating(false)
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        setUserLocation({ latitude, longitude })
+
+        const nearestBuilding = findNearestBuilding(latitude, longitude)
+        if (nearestBuilding) {
+          setLocation(nearestBuilding)
+        }
+
+        setIsLocating(false)
+      },
+      (error) => {
+        let errorMessage = "Unable to get your location"
+
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "Location permission denied"
+            break
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information is unavailable"
+            break
+          case error.TIMEOUT:
+            errorMessage = "Location request timed out"
+            break
+        }
+
+        setLocationError(errorMessage)
+        setIsLocating(false)
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      },
+    )
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
-      // Find the selected option to get its temperature value
       const selectedOption = temperatureOptions.find((option) => option.value === temperatureFeeling)
       const temperatureValue = selectedOption ? selectedOption.temperature : null
 
-      // Find the selected building label
       const selectedBuilding = campusBuildings.find((building) => building.value === location)
       const buildingLabel = selectedBuilding ? selectedBuilding.label : location
 
-      // Create the report object with all fields for our new table
       const reportData = {
         temperature: temperatureValue,
         temperature_feeling: temperatureFeeling,
@@ -80,24 +187,19 @@ function ReportForm() {
 
       console.log("Submitting to TemperatureReports table:", reportData)
 
-      // Save to Supabase using the new table - IMPORTANT: Use "TemperatureReports", not "Reports"
-      const { data, error } = await supabase
-        .from("TemperatureReports") // Make sure this matches exactly the table name you created
-        .insert([reportData])
-        .select()
+      const { data, error } = await supabase.from("TemperatureReports").insert([reportData]).select()
 
       if (error) {
         throw error
       }
 
-      // Success - reset form and show success message
       alert(
         `Temperature report submitted successfully! Recorded as ${selectedOption.label} (${temperatureValue}°F) at ${buildingLabel}`,
       )
       setTemperatureFeeling("")
       setLocation("")
+      setUserLocation(null)
 
-      // Navigate to reports page
       navigate("/reports")
     } catch (error) {
       console.error("Error submitting report:", error)
@@ -133,9 +235,52 @@ function ReportForm() {
         </div>
 
         <div>
-          <label htmlFor="location" className="block text-lg font-medium text-white mb-2">
-            Location on Campus
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label htmlFor="location" className="block text-lg font-medium text-white">
+              Location on Campus
+            </label>
+            <button
+              type="button"
+              onClick={getUserLocation}
+              disabled={isLocating}
+              className="text-sm bg-unc-charlotte-gold text-unc-charlotte-green px-3 py-1 rounded-md hover:bg-opacity-90 transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+            >
+              {isLocating ? (
+                <span className="flex items-center">
+                  <svg
+                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-unc-charlotte-green"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Locating...
+                </span>
+              ) : (
+                "Use My Location"
+              )}
+            </button>
+          </div>
+
+          {locationError && <div className="mb-2 text-red-300 text-sm">{locationError}</div>}
+
+          {userLocation && (
+            <div className="mb-2 text-green-300 text-sm">Location found! Nearest building selected.</div>
+          )}
+
           <div className="relative">
             <select
               id="location"
@@ -177,7 +322,6 @@ function ReportForm() {
   )
 }
 
-// Helper function to get appropriate background color based on temperature feeling
 function getTemperatureColor(feeling) {
   switch (feeling) {
     case "freezing":
