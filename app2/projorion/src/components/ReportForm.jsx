@@ -194,7 +194,7 @@ function ReportForm() {
       }
 
       alert(
-        `Temperature report submitted successfully! Recorded as ${selectedOption.label} (${temperatureValue}°F) at ${buildingLabel}`,
+        `Temperature report submitted successfully. Recorded ${selectedOption.label} (${temperatureValue}°F) at ${buildingLabel}`,
       )
       setTemperatureFeeling("")
       setLocation("")
