@@ -210,7 +210,7 @@ function ReportForm() {
   }
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       <h2 className="text-4xl font-bold text-center mb-8 text-white">Report Temperature</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
