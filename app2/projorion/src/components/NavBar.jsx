@@ -17,17 +17,20 @@ function NavBar() {
             <Link to="/" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
               Home
             </Link>
-            <Link to="/map" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
-              View Map
-            </Link>
-            <Link to="/reports" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
-              View Temperatures
-            </Link>
-            {user ? (
+            {user && (
               <>
+                <Link to="/map" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
+                  View Map
+                </Link>
+                <Link to="/reports" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
+                  View Temperatures
+                </Link>
                 <Link to="/report" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
                   Report Temperature
                 </Link>
+              </>
+            )}
+            {user ? (
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={signOut}
@@ -37,7 +40,6 @@ function NavBar() {
                   </button>
                   <span className="text-unc-charlotte-green">({user.email})</span>
                 </div>
-              </>
             ) : (
               <>
                 <Link to="/login" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
