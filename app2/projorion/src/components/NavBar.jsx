@@ -17,6 +17,12 @@ function NavBar() {
             <Link to="/" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
               Home
             </Link>
+            <Link to="/map" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
+              View Map
+            </Link>
+            <Link to="/reports" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
+              View Temperatures
+            </Link>
             {user ? (
               <>
                 <Link to="/report" className="text-unc-charlotte-green hover:text-white transition-colors font-medium">
