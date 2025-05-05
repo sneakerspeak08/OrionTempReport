@@ -11,6 +11,9 @@ then start npm server:\
 finally:\
 &nbsp;&nbsp;&nbsp;&nbsp;open http://localhost:3000\
 
+## For testing
+npx vitest
+
 ## Usage Details:
 This application was created to allow UNC students and faculty to report and view the temperatures of individual classrooms or buildings across UNC Charlotte campus.
 
