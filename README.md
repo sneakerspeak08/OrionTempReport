@@ -15,4 +15,4 @@ finally:\
 This application was created to allow UNC students and faculty to report and view the temperatures of individual classrooms or buildings across UNC Charlotte campus.
 
 ## Team Progress:
-Working on Sprint 1
+Finalizing project
